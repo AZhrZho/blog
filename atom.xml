@@ -19,6 +19,45 @@
             <name>zhuoqiang.li</name>
             <uri>https://github.com/AZhrZho</uri>
         </author>
-        <category label="c#" term="c#"/>
+        <category label="csharp" term="csharp"/>
+        <category label="c++" term="c++"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[友情链接]]></title>
+        <id>https://azhrzho.github.io/blog/friends</id>
+        <link href="https://azhrzho.github.io/blog/friends"/>
+        <updated>2023-10-07T00:00:00.000Z</updated>
+        <author>
+            <name>Token团队</name>
+            <uri>https://itoken.team</uri>
+        </author>
+        <author>
+            <name>DGGua</name>
+            <uri>https://github.com/DGGua</uri>
+        </author>
+        <author>
+            <name>DismissedLight</name>
+            <uri>https://github.com/Lightczx</uri>
+        </author>
+        <author>
+            <name>FeliksLv</name>
+            <uri>https://blog.kcqnly.club</uri>
+        </author>
+        <author>
+            <name>Misaka</name>
+            <uri>https://www.amghank.cn</uri>
+        </author>
+        <author>
+            <name>Platelets</name>
+            <uri>https://github.com/CodingPlatelets</uri>
+        </author>
+        <author>
+            <name>Perinze</name>
+            <uri>https://github.com/Perinze</uri>
+        </author>
+        <author>
+            <name>Saicem</name>
+            <uri>https://github.com/Saicem</uri>
+        </author>
     </entry>
 </feed>
