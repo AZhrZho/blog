@@ -2,7 +2,7 @@
 slug: cs-cpp-interop
 title: C#与C++互操作技术概述
 authors: AZ
-tags: [c#, c++]
+tags: [csharp, c++]
 ---
 
 c#和c++是两种优秀的语言，在一些情况下需要实现二者之间的互操作性（Interop），即C#调用C++编写的代码，或C++调用C#编写的代码。本文将介绍常见的几种C#和C++之间的互操作技术，并讨论其优缺点。
