@@ -1,5 +1,5 @@
 ---
-slug: first-blog-post
+slug: cs-cpp-interop
 title: C#与C++互操作技术概述
 authors: AZ
 tags: [c#, c++]
@@ -27,7 +27,8 @@ P/Invoke即Platform Invoke，平台调用技术，是C#方面的技术，允许�
 - 参数中的结构体/共用体对应为C#中的`struct`，但对应`struct`中的字段分布需要手动指定，保证和c++中的一致
 
 P/Invoke是C#互操作中最常见的技术，其优势在于c/c++方面只需很少的修改或不用修改，就能在C#中直接导入，最常见的例子就是C#调用Windows API，例如`PostMessage`：
-``` c++
+
+```cpp
 // c++声明：
 BOOL PostMessageW(
   [in, optional] HWND   hWnd,
@@ -36,7 +37,8 @@ BOOL PostMessageW(
   [in]           LPARAM lParam
 );
 ```
-``` csharp
+
+```cs
 // c# 导入
 [DllImport("user32.dll", EntryPoint = "PostMessageW")]
 public static extern bool PostMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
@@ -45,7 +47,8 @@ public static extern bool PostMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntP
 但这种方式的缺点也很明显，由于需要处理跨越托管代码边界传参时的封送，性能相对要低一些。另外，如果原函数调用中涉及很多指针和结构体，C#方面的处理就会很繁琐。就拿上面的`PostMessage`举例，`wParam`和`lParam`都是指向结构体的指针，而结构体的类型是由`msg`参数确定的。这意味着如果需要发送的消息种类比较多，就需要把每种结构体严格写出来，在调用时还需要转为`IntPtr`。而实际在`PostMesssage`涉及的结构体的定义中很多还嵌套着其它结构体和指针，总之就是非常麻烦。
 
 因此，P/Invoke适用于调用c/c++编写的参数和返回值类型较简单且固定的函数，比如`FindWindow`:
-``` csharp
+
+```cs
 [DllImport("user32.dll")]
 static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 ```
@@ -56,7 +59,8 @@ c++/clr是VC的一种神奇的技术，它允许生成的dll中同时包含托�
 这种方式的优点在于，开发者可以任意控制托管代码和非托管代码的边界，甚至可以在同一个函数中既调用原生c++的代码，又调用c#编写的程序集中的类和方法；既可以将程序集中的类和方法封装成c++的类和函数供c++调用，又可以将c++的类和函数封装成程序集供c#调用。而缺点在于，使用c++编写面向CLR代码需要使用一种特殊的语法，有额外的学习成本。
 
 例如将Windows API中的`SendInput`函数封装为c#可用的程序集:
-``` c++
+
+```cpp
 public ref class NativeInput
 {
 private:
@@ -68,7 +72,8 @@ public:
 };
 ```
 可以看到，使用c++定义CLR的类需要使用`ref class`，而CLR中的数组定义为`array<Type>^`，其它语法则与c++基本一致。方法的实现如下：
-```c++
+
+```cpp
 void NativeInput::SendKey(array<WORD>^ keys)
 {
     const int length = keys->Length * 2;
@@ -142,7 +147,7 @@ void NativeInput::SendUnicode(array<WORD>^ unicodes)
 
 第二步，在公共类中添加**静态公共方法**，并添加`[UnmanagedCallersOnly]`特性。以下示例代码实现一个可被c++调用的获取日期是星期几的函数：
 
-``` csharp
+```cs
 [UnmanagedCallersOnly(EntryPoint = "GetDayOfWeek")]
 public static int GetDayOfWeek(nint lpDate, nint lpDay)
 {
@@ -164,7 +169,7 @@ public static int GetDayOfWeek(nint lpDate, nint lpDay)
 ```
 该函数符合c风格api，使用`lpDate`指针传入日期字符串，使用`lpDay`指针传出星期几的整数，并使用返回值标志函数执行是否成功。需要注意的是，代码使用`Marshal.PtrToStringUni`方法从指针读入字符串，并使用`Marshal.StructureToPtr`方法将数据写入指针。如果开启不安全代码，可以直接在C#中使用指针，以上代码可改写为：
 
-``` csharp
+```cs
 [UnmanagedCallersOnly(EntryPoint = "GetDayOfWeek")]
 public unsafe static int GetDayOfWeek(char* lpDate, int* lpDay)
 {
@@ -188,7 +193,7 @@ public unsafe static int GetDayOfWeek(char* lpDate, int* lpDay)
 
 第三步，在项目配置中添加以下内容：
 
-``` xml
+```xml
 <PublishAot>true</PublishAot>
 ```
 以上选项开启AOT编译。
@@ -199,7 +204,7 @@ public unsafe static int GetDayOfWeek(char* lpDate, int* lpDay)
 ### C++调用示例
 新建一个c++控制台项目，代码如下：
 
-``` cpp
+```cpp
 #include <iostream>
 #include <Windows.h>
 
