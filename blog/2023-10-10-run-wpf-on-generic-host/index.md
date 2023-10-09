@@ -244,4 +244,4 @@ AyatoHost.Run<App, MainWindow>(args, hostBuilder =>
 });
 ```
 
-源码在[这里](https://github.com/AZhrZho)，欢迎品鉴。
+源码在[这里](https://github.com/AZhrZho/XamlPlayground/tree/main/AyatoPack)，欢迎品鉴。
