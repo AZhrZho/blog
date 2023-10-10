@@ -80,6 +80,10 @@ const config = {
       footer: {
         style: 'dark',
         links: [
+          {
+            label: "萌ICP备20232014号",
+            href: "https://icp.gov.moe/?keyword=20232014"
+          }
         ],
         copyright: `Copyright © ${new Date().getFullYear()} AZhrZho, Inc. Built with Docusaurus.`,
       },
