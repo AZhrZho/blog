@@ -2,11 +2,25 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://azhrzho.github.io/blog/</id>
     <title>AZ's Blog Blog</title>
-    <updated>2023-10-10T00:00:00.000Z</updated>
+    <updated>2023-10-13T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://azhrzho.github.io/blog/"/>
     <subtitle>AZ's Blog Blog</subtitle>
     <icon>https://azhrzho.github.io/blog/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[附加进程调试时启用WPF热重载]]></title>
+        <id>https://azhrzho.github.io/blog/wpf-hot-reload</id>
+        <link href="https://azhrzho.github.io/blog/wpf-hot-reload"/>
+        <updated>2023-10-13T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[WPF从.Net framework 4.8开始原生支持热重载，由于复杂场景下XAML设计器无法实现所见即所得，该特性能够极大提升WPF应用开发的效率。然而Visual Studio默认只支持运行调试时的热重载，对于附加调试的场景，还需要一些额外的设置。]]></summary>
+        <content type="html"><![CDATA[<p>WPF从.Net framework 4.8开始原生支持热重载，由于复杂场景下XAML设计器无法实现所见即所得，该特性能够极大提升WPF应用开发的效率。然而Visual Studio默认只支持运行调试时的热重载，对于附加调试的场景，还需要一些额外的设置。</p><h2 class="anchor anchorWithStickyNavbar_LWe7" id="设置环境变量">设置环境变量<a href="#设置环境变量" class="hash-link" aria-label="Direct link to 设置环境变量" title="Direct link to 设置环境变量">​</a></h2><p>XAML热重载要求在应用程序启动时将环境变量<code>ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO</code>设置为<code>1</code>，在Visual Studio中运行调试时，工具会自动设置该变量。但是在附加调试时需要手动设置。</p><p>最方便的方法是直接添加一个系统或用户变量，也可以在被调试进程启动时设置临时变量。</p><h2 class="anchor anchorWithStickyNavbar_LWe7" id="生成热重载信息">生成热重载信息<a href="#生成热重载信息" class="hash-link" aria-label="Direct link to 生成热重载信息" title="Direct link to 生成热重载信息">​</a></h2><p>热重载依赖编译期间生成的一些数据，在附加进程调试时，这些数据不会自动生成。因此需要为待调试XAML所在的csproj添加以下Property：</p><div class="language-xml codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-xml codeBlock_bY9V thin-scrollbar"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token tag punctuation" style="color:#393A34">&lt;</span><span class="token tag" style="color:#00009f">XamlDebuggingInformation</span><span class="token tag punctuation" style="color:#393A34">&gt;</span><span class="token plain">True</span><span class="token tag punctuation" style="color:#393A34">&lt;/</span><span class="token tag" style="color:#00009f">XamlDebuggingInformation</span><span class="token tag punctuation" style="color:#393A34">&gt;</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="复制代码" title="复制" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div><p>配置以上两点即可支持附加进程调试时的XAML热重载。</p><h2 class="anchor anchorWithStickyNavbar_LWe7" id="wpf中xaml热重载的局限性">WPF中XAML热重载的局限性<a href="#wpf中xaml热重载的局限性" class="hash-link" aria-label="Direct link to WPF中XAML热重载的局限性" title="Direct link to WPF中XAML热重载的局限性">​</a></h2><p>热重载虽然方便，但也有局限性，也就是说不是任何改动都可以热重载的。在WPF中存在如下局限：</p><ul><li>无法在运行时为组件添加事件处理器</li><li>无法在运行时添加新的XAML文件</li><li>不能修改Nuget包</li></ul><p>另外需区分XMAL热重载和C#热重载，XAML热重载在 <strong>.net framework 4.8</strong> 即可用，而如果要在运行时修改C#代码，则至少需要 <strong>.net6</strong> 才可支持。</p><blockquote><p>参考：</p><ol><li><a href="https://learn.microsoft.com/zh-cn/visualstudio/xaml-tools/xaml-hot-reload?view=vs-2022" target="_blank" rel="noopener noreferrer">WPF 和 UWP 应用的 XAML 热重载</a></li><li><a href="https://learn.microsoft.com/zh-cn/troubleshoot/developer/visualstudio/tools-utilities/xaml-hot-reload-troubleshooting?view=vs-2022" target="_blank" rel="noopener noreferrer">XAML 热重载疑难解答</a></li></ol></blockquote>]]></content>
+        <author>
+            <name>zhuoqiang.li</name>
+            <uri>https://github.com/AZhrZho</uri>
+        </author>
+        <category label="c#" term="c#"/>
+        <category label="wpf" term="wpf"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[如何优雅地为WPF添加依赖注入]]></title>
         <id>https://azhrzho.github.io/blog/run-wpf-on-generic-host</id>
